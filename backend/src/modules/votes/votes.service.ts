@@ -8,7 +8,7 @@ import { verifySignature } from '../utils/signature';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { Vote } from './reposities/vote.reposity';
 import { Order } from './../orders/reposities/order.reposity';
-import { DacsService } from '../dacs/dacs.service';
+import { IpfsService } from '../ipfs/ipfs.service';
 import { LendingPoolService } from '../lending-pool/lending-pool.service';
 import { Nft } from './../nfts/reposities/nft.reposity';
 import { OrderStatus } from '../orders/dto/order.enum';
@@ -20,7 +20,7 @@ export class VotesService {
     private readonly vote: Vote,
     private readonly order: Order,
     private readonly nft: Nft,
-    private readonly dacs: DacsService,
+    private readonly ipfs: IpfsService,
     private readonly lendingPool: LendingPoolService,
   ) {}
 
@@ -71,8 +71,8 @@ export class VotesService {
       createdAt: new Date().getTime(),
     };
 
-    const dacs_cid = await this.dacs.upload(newVote);
-    newVote.dacs_url = `${config.ENV.SERVER_HOST}:${config.ENV.SERVER_PORT}/dacs/${dacs_cid}`;
+    const ipfs_cid = await this.ipfs.upload(newVote);
+    newVote.ipfs_url = `${config.ENV.SERVER_HOST}:${config.ENV.SERVER_PORT}/ipfs/${ipfs_cid}`;
 
     const orderUpdatedData: Record<string, any> = {
       vote: currentVote,

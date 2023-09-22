@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { VoteRedisService } from 'src/connections/redis/vote.redis.provider';
-const sha256 = require('simple-sha256');
 
 @Injectable()
 export class Crawl {

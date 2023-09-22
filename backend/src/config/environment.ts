@@ -22,16 +22,21 @@ export const Environment = {
 
   // Web3 host
   NETWORK_RPC_URL:
-    process.env.NETWORK_RPC_URL || 'https://rpc-kura.cross.technology/',
+    process.env.NETWORK_RPC_URL || 'https://rpc.apothem.network/',
   WXDC_ADDRESS:
-    process.env.WXDC_ADDRESS || '0x747ae7dcf3ea10d242bd17ba5dfa034ca6102108',
+    process.env.WXDC_ADDRESS || '0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b',
   COLLECTION_ADDRESS:
     process.env.COLLECTION_ADDRESS ||
-    '0x9b42ed936c5fedf3ca20a2d97322531b1398412f',
+    '0x0cc14b1adced0804014449c18ddff71a426a1bd0',
   LENDING_POOL_ADDRESS:
     process.env.LENDING_POOL_ADDRESS ||
-    '0x603c668fd2dd8477b755f43c9ccac6a409684717',
+    '0xeca64907285fe80732bba2f81d8810bafca77790',
   LOAN_ADDRESS:
-    process.env.LOAN_ADDRESS || '0x5a400dc64d2b77b5f3dd0061d037544521339676',
-  CHAIN_ID: process.env.CHAIN_ID || '5555',
+    process.env.LOAN_ADDRESS || '0xe066cbdd13b9da906a72253360fa3264b39accf6',
+  NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '51',
+  IPFS_HOST: process.env.IPFS_HOST || 'https://gateway.ipfs.io/ipfs',
+  PINATA_API_KEY: process.env.PINATA_API_KEY || '9bf70188a61a1447bd82',
+  PINATA_API_SECRET_KEY:
+    process.env.PINATA_API_SECRET_KEY ||
+    '83523b16d1a3bbd87dc014a4e3e9cbe1f931487fbf9dc1d2286ac3062af68369',
 };

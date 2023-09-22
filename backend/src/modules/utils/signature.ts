@@ -37,6 +37,7 @@ export const generateOfferMessage = (
     erc20Denomination,
   } = offerData;
   const repayment = calculateRepayment(offer, rate, duration);
+  console.log(loanContract, chainId)
 
   const encodedOffer = ethers.solidityPacked(
     ['address', 'uint256', 'uint256', 'address', 'uint256', 'uint32', 'uint16'],

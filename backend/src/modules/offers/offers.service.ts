@@ -13,7 +13,7 @@ import { OfferStatus } from './dto/offer.enum';
 import { OrderStatus } from '../orders/dto/order.enum';
 import { Offer } from './reposities/offer.reposity';
 import { Order } from '../orders/reposities/order.reposity';
-import { DacsService } from '../dacs/dacs.service';
+import { IpfsService } from '../ipfs/ipfs.service';
 import * as FACTORY_ABI from './abi/LOAN.json';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class OffersService implements OnModuleInit {
   constructor(
     private readonly offer: Offer,
     private readonly order: Order,
-    private readonly dacs: DacsService,
+    private readonly ipfs: IpfsService,
   ) {}
 
   onModuleInit() {
@@ -41,7 +41,7 @@ export class OffersService implements OnModuleInit {
       createOfferDto,
       createOfferDto.signature,
       config.ENV.LOAN_ADDRESS,
-      config.ENV.CHAIN_ID,
+      config.ENV.NETWORK_CHAIN_ID,
     );
 
     if (
@@ -62,8 +62,8 @@ export class OffersService implements OnModuleInit {
       // createdAt: new Date().getTime(),
     };
 
-    const dacs_cid = await this.dacs.upload(newOffer);
-    newOffer.dacs_url = `${config.ENV.SERVER_HOST}:${config.ENV.SERVER_PORT}/dacs/${dacs_cid}`;
+    const ipfs_cid = await this.ipfs.upload(newOffer);
+    newOffer.ipfs_url = `${config.ENV.IPFS_HOST}/${ipfs_cid}`;
 
     await this.offer.create(createOfferDto.order, offerHash, newOffer);
   }
@@ -100,8 +100,6 @@ export class OffersService implements OnModuleInit {
         if (!event) continue;
         if (Object.keys(event).length === 0) continue;
         if (!event.fragment) continue;
-
-        console.log(event.fragment.name, event.args.loanId);
 
         switch (event.fragment.name) {
           case 'LoanStarted': {

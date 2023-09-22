@@ -4,7 +4,7 @@ import { OrdersController } from './orders.controller';
 import { ConnectionsModule } from 'src/connections/connections.module';
 import { ReposityModule } from './reposities/reposity.module';
 import { NftsModule } from '../nfts/nfts.module';
-import { DacsModule } from '../dacs/dacs.module';
+import { IpfsModule } from '../ipfs/ipfs.module';
 import { LendingPoolModule } from '../lending-pool/lending-pool.module';
 
 @Module({
@@ -12,7 +12,7 @@ import { LendingPoolModule } from '../lending-pool/lending-pool.module';
     ConnectionsModule,
     ReposityModule,
     NftsModule,
-    DacsModule,
+    IpfsModule,
     LendingPoolModule,
   ],
   exports: [ReposityModule],

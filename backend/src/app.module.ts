@@ -5,7 +5,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { OffersModule } from './modules/offers/offers.module';
 import { NftsModule } from './modules/nfts/nfts.module';
 import { VotesModule } from './modules/votes/votes.module';
-import { DacsModule } from './modules/dacs/dacs.module';
+import { IpfsModule } from './modules/ipfs/ipfs.module';
 import { LendingPoolModule } from './modules/lending-pool/lending-pool.module';
 import { SchedulesModule } from './modules/schedules/schedules.module';
 
@@ -17,7 +17,7 @@ import { SchedulesModule } from './modules/schedules/schedules.module';
     OffersModule,
     NftsModule,
     VotesModule,
-    DacsModule,
+    IpfsModule,
     LendingPoolModule,
     SchedulesModule,
   ],
