@@ -8,6 +8,10 @@ export const sliceAddress = (address) => {
   return `${address.slice(0, 5)} ... ${address.slice(-4)}`;
 };
 
+export const sliceHeadTail = (input, amount) => {
+  return `${input.slice(0, amount)} ... ${input.slice(- amount + 1)}`;
+};
+
 export const calculateRealPrice = (price, rate, denominator) => {
   return (price + (price * rate) / denominator).toFixed(7);
 };

@@ -95,7 +95,9 @@ export default function Pool() {
 
       fetchBalanceInfo();
     } catch (error) {
+      const txError = parseMetamaskError(error);
       setIsLoading(false);
+      toast.error(txError.context);
       console.log('error', error);
     }
   };
@@ -108,7 +110,9 @@ export default function Pool() {
       toast.success(`Claim wXDC successfully`);
       fetchBalanceInfo();
     } catch (error) {
+      const txError = parseMetamaskError(error);
       setIsLoading(false);
+      toast.error(txError.context);
       console.log('error', error);
     }
   };

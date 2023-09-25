@@ -31,10 +31,10 @@ export default function Assets() {
         owner: account.address,
         isAvailable: true,
       });
-      // const tbaNFt = await fetchTokenBoundAccount();
-      // if (tbaNFt) {
-      //   data.push(tbaNFt);
-      // }
+      const tbaNFt = await fetchTokenBoundAccount();
+      if (tbaNFt) {
+        data.push(tbaNFt);
+      }
       setListNFT(data);
       setIsLoading(false);
     } catch (error) {

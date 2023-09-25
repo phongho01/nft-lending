@@ -11,7 +11,6 @@ import {
   getStakedByUser,
   calculateRepayment,
   sliceAddress,
-  calculateRealPrice,
   convertOfferDataToSign,
   generateOfferSignature,
   liquidateLoan,
@@ -21,7 +20,7 @@ import { ONE_DAY, OrderStatus, FormType } from '@src/constants';
 import { submitVote, getVote } from '@src/api/vote.api';
 import styles from '../styles.module.scss';
 
-const DXC_SCAN = import.meta.env.VITE_DXC_SCAN;
+const XDC_SCAN = import.meta.env.VITE_XDC_SCAN;
 
 export default function Form({ item, onClose, type }) {
   const ref = useRef(null);
@@ -139,7 +138,7 @@ export default function Form({ item, onClose, type }) {
                   <div className={styles.label}>Address: </div>
                   <div className={styles.value}>
                     <span>{sliceAddress(item.nftAddress)}</span>
-                    <Link to={`${DXC_SCAN}/address/${item.nftAddress}`} target="_blank">
+                    <Link to={`${XDC_SCAN}/address/${item.nftAddress}`} target="_blank">
                       <Icon icon="uil:edit" />
                     </Link>
                   </div>
@@ -148,7 +147,7 @@ export default function Form({ item, onClose, type }) {
                   <div className={styles.label}>Borrower: </div>
                   <div className={styles.value}>
                     <span>{sliceAddress(item.creator)}</span>
-                    <Link to={`${DXC_SCAN}/address/${item.creator}`} target="_blank">
+                    <Link to={`${XDC_SCAN}/address/${item.creator}`} target="_blank">
                       <Icon icon="uil:edit" />
                     </Link>
                   </div>
@@ -177,12 +176,6 @@ export default function Form({ item, onClose, type }) {
                   <div className={styles.label}>Float price: </div>
                   <div className={styles.value}>
                     {item.floorPrice} {account.currency}
-                  </div>
-                </div>
-                <div className={styles.info}>
-                  <div className={styles.label}>Oracle price: </div>
-                  <div className={styles.value}>
-                    {calculateRealPrice(item.offer * 1.2, rate, 1e7)} {account.currency}
                   </div>
                 </div>
               </div>

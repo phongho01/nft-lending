@@ -13,7 +13,7 @@ import LendOffersPage from '@src/pages/lend/offers';
 import MakeOfferPage from '@src/pages/assets/make-offer';
 import LendingPoolPage from '@src/pages/lending-pool';
 import LendingPoolRequestsPage from '@src/pages/lending-pool/requests';
-import FaucetPage from '@src/pages/faucet';
+import ExchangePage from '@src/pages/exchange';
 import { BORROW_TABS, LEND_TABS, LENDING_POOL_TABS, PROFILE_TABS } from '@src/constants';
 
 export const userRoutes = [
@@ -117,12 +117,8 @@ export const userRoutes = [
         element: <MakeOfferPage />,
       },
       {
-        path: '/wxcr-faucet',
-        element: <FaucetPage />,
-      },
-      {
-        path: '/nft-faucet',
-        element: <FaucetPage />,
+        path: '/exchange',
+        element: <ExchangePage />,
       },
     ],
   },

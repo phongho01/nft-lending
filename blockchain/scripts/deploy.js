@@ -73,7 +73,7 @@ async function main() {
     await directLoanFixedOffer.deployed();
     console.log("DirectLoanFixedOffer                        deployed to:>>", directLoanFixedOffer.address);
 
-    const tx = await lendingPool.approve("0xe066cbdd13b9da906a72253360fa3264b39accf6", ethers.constants.MaxUint256);
+    const tx = await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
     console.log(tx)
     console.log("==========================================================================");
     console.log("DONE");

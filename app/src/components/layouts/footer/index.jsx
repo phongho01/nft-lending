@@ -7,10 +7,10 @@ export default function Footer() {
     <div className={styles.footer}>
       <div className={styles.introduction}>
         <Link to="/" className={styles.logo}>
-          AvengersFI
+          AvengersFi
         </Link>
         <div className={styles.description}>
-          AvengersFI is a peer-to-peer platform that lets NFT <br />
+          AvengersFi is a peer-to-peer platform that lets NFT <br />
           holders and liquidity providers connect via <br />
           permissionless smart contract infrastructure.
         </div>

@@ -44,7 +44,7 @@ export default function Header({ handleAccountsChanged, requireSwitchNetwork }) 
   return (
     <div className={`${styles.header} ${darkBackground ? styles.dark : ''}`}>
       <Link to="/" className={styles.logo}>
-        AvengersFI
+        AvengersFi
       </Link>
       <Menu />
       <div className={styles.account}>

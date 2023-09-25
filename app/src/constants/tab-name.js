@@ -1,6 +1,6 @@
 export const FOOTER_MENU = [
     {
-      title: 'AvengersFI',
+      title: 'AvengersFi',
       items: [
         {
           title: 'Privacy Policy',
@@ -115,6 +115,10 @@ export const FOOTER_MENU = [
     {
       title: 'Lending pool',
       link: '/lending-pool',
+    },
+    {
+      title: 'Exchange',
+      link: '/exchange',
     },
   ];
   

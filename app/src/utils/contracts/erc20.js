@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
 
-export const ERC20Contract = (address, signerOrProvider = provider) => {
+export const ERC20Contract = (address = WXDC_ADDRESS, signerOrProvider = provider) => {
   return new ethers.Contract(address, ERC20_ABI, signerOrProvider);
 };
 
@@ -40,12 +40,21 @@ export const approveERC20 = async (
   return contract.approve(spender, amount);
 };
 
-export const mintERC20 = async (
-  address,
-  amount = ethers.utils.parseUnits('20', 18),
-  contractAddress = WXDC_ADDRESS
-) => {
+export const mintERC20 = async (amount, contractAddress = WXDC_ADDRESS) => {
   const signer = provider.getSigner();
   const contract = ERC20Contract(contractAddress, signer);
-  return contract.mint(address, amount);
+  const decimals = await contract.decimals();
+  return contract.mint({ value: ethers.utils.parseUnits(`${amount}`, decimals) });
 };
+
+export const burnERC20 = async (amount, contractAddress = WXDC_ADDRESS) => {
+  const signer = provider.getSigner();
+  const contract = ERC20Contract(contractAddress, signer);
+  const decimals = await contract.decimals();
+  return contract.burn(ethers.utils.parseUnits(`${amount}`, decimals));
+};
+
+const decimals = (address = WXDC_ADDRESS) => {
+  const contract = ERC20Contract(address);
+  return contract.decimals();
+}

@@ -24,15 +24,15 @@ export const Environment = {
   NETWORK_RPC_URL:
     process.env.NETWORK_RPC_URL || 'https://rpc.apothem.network/',
   WXDC_ADDRESS:
-    process.env.WXDC_ADDRESS || '0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b',
+    process.env.WXDC_ADDRESS || '0xae506ec5eea42eab2dc94d7d04e2b32549e59df4',
   COLLECTION_ADDRESS:
     process.env.COLLECTION_ADDRESS ||
     '0x0cc14b1adced0804014449c18ddff71a426a1bd0',
   LENDING_POOL_ADDRESS:
     process.env.LENDING_POOL_ADDRESS ||
-    '0xeca64907285fe80732bba2f81d8810bafca77790',
+    '0xea17e98586fd542e0edc35bd50400e4045b72dc5',
   LOAN_ADDRESS:
-    process.env.LOAN_ADDRESS || '0xe066cbdd13b9da906a72253360fa3264b39accf6',
+    process.env.LOAN_ADDRESS || '0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60',
   NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '51',
   IPFS_HOST: process.env.IPFS_HOST || 'https://gateway.ipfs.io/ipfs',
   PINATA_API_KEY: process.env.PINATA_API_KEY || '9bf70188a61a1447bd82',

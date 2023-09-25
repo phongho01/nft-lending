@@ -19,6 +19,11 @@ export const TokenBoundAccountRegistry = (
 
 export const getTokenBoundAccount = (tokenId) => {
   const contract = TokenBoundAccountRegistry();
+  console.log(TOKEN_BOUND_ACCOUNT_IMPLEMENTATION_ADDRESS,
+    CHAIN_ID,
+    TOKEN_BOUND_ACCOUNT_NFT_ADDRESS,
+    tokenId,
+    SALT)
   return contract.account(
     TOKEN_BOUND_ACCOUNT_IMPLEMENTATION_ADDRESS,
     CHAIN_ID,

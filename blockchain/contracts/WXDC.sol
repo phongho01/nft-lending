@@ -3,6 +3,8 @@ pragma solidity 0.8.18;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract WXDC is ERC20 {
+    event Minted(address account, uint256 amount);
+    event Burnt(address account, uint256 amount);
 
     /* *********** */
     /* CONSTRUCTOR */
@@ -16,10 +18,18 @@ contract WXDC is ERC20 {
     /**
      * @notice Mint wXDC to user
      * @dev Everyone can call this function
-     * @param _to Address that will be received wXDC
-     * @param _amount Amount of XCR
      */
-    function mint(address _to, uint256 _amount) external {
-        _mint(_to, _amount);
+    function mint() external payable {
+        _mint(_msgSender(), msg.value);
+
+        emit Minted(_msgSender(), msg.value);
+    }
+
+    function burn(uint256 _amount) external {
+        _burn(_msgSender(), _amount);
+        (bool success, ) = (_msgSender()).call{value: _amount}("");
+        require(success, "Fail transfer native");
+
+        emit Burnt(_msgSender(), _amount);
     }
 }

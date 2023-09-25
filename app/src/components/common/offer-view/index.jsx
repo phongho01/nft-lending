@@ -6,11 +6,11 @@ import { useSelector } from 'react-redux';
 import { useOnClickOutside } from 'usehooks-ts';
 import ReactLoading from 'react-loading';
 import { Icon } from '@iconify/react';
-import { calculateRepayment, sliceAddress, calculateRealPrice } from '@src/utils';
+import { calculateRepayment, sliceAddress } from '@src/utils';
 import { getOrderByHash } from '@src/api/order.api';
 import styles from './styles.module.scss';
 
-const DXC_SCAN = import.meta.env.VITE_DXC_SCAN;
+const XDC_SCAN = import.meta.env.VITE_XDC_SCAN;
 
 export default function OfferView({ item, onClose, action }) {
   const ref = useRef(null);
@@ -67,7 +67,7 @@ export default function OfferView({ item, onClose, action }) {
                 <div className={styles.value}>
                   <span>{data.lender ? 'Lending Pool' : sliceAddress(data.creator)}</span>
                   {!data.lender && (
-                    <Link to={`${data.lender ? 'lending-pool' : DXC_SCAN}/address/${data.creator}`} target="_blank">
+                    <Link to={`${data.lender ? 'lending-pool' : XDC_SCAN}/address/${data.creator}`} target="_blank">
                       <Icon icon="uil:edit" />
                     </Link>
                   )}
@@ -77,7 +77,7 @@ export default function OfferView({ item, onClose, action }) {
                 <div className={styles.label}>Borrower: </div>
                 <div className={styles.value}>
                   <span>{sliceAddress(data.order.creator)}</span>
-                  <Link to={`${DXC_SCAN}/address/${data.order.creator}`} target="_blank">
+                  <Link to={`${XDC_SCAN}/address/${data.order.creator}`} target="_blank">
                     <Icon icon="uil:edit" />
                   </Link>
                 </div>
@@ -106,12 +106,6 @@ export default function OfferView({ item, onClose, action }) {
                 <div className={styles.label}>Float price: </div>
                 <div className={styles.value}>
                   {data.floorPrice} {currency}
-                </div>
-              </div>
-              <div className={styles.info}>
-                <div className={styles.label}>Oracle price: </div>
-                <div className={styles.value}>
-                  {calculateRealPrice(data.offer * 1.2, rate, 1e7)} {currency}
                 </div>
               </div>
               {action && (

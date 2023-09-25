@@ -6,10 +6,10 @@ async function main() {
     const accounts = await ethers.getSigners();
 
     //* Loading contract factory */
-    // const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
-    // const permittedNFT = PermittedNFTs.attach('0xe55DF49fc37CC4795810607f51AEE537a549014d');
-    // const tx = await permittedNFT.connect(accounts[0]).setNFTPermit('0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0', true)
-    // console.log(tx);
+    const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
+    const permittedNFT = PermittedNFTs.attach('0x4E96D67870339a9A3723889eF5B2c39996e8d509');
+    const tx = await permittedNFT.connect(accounts[0]).setNFTPermit('0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0', true)
+    console.log(tx);
 
     // const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
     //     libraries: {
@@ -57,15 +57,19 @@ async function main() {
 
     // const LendingPool = await ethers.getContractFactory("LendingPoolV3");
     // const lendingPool = LendingPool.attach("0xeca64907285fe80732bba2f81d8810bafca77790");
-    // const tx = await lendingPool.approve("0xe066cbdd13b9da906a72253360fa3264b39accf6", ethers.constants.MaxUint256);
+    // const tx = await lendingPool.approve("0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60", ethers.constants.MaxUint256);
     // console.log(tx)
     // console.log(await lendingPool.treasury());
 
-    const WXDC = await ethers.getContractFactory("WXDC");
-    const wXDC = WXDC.attach("0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b");
-    await wXDC.connect(accounts[0]).approve("0xeca64907285fe80732bba2f81d8810bafca77790", ethers.constants.MaxUint256);
-
-    // // // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0xe066cbdd13b9da906a72253360fa3264b39accf6");
+    // const WXDC = await ethers.getContractFactory("WXDC");
+    // const wXDC = await WXDC.deploy();
+    // console.log('wXDC', wXDC.address)
+    // await wXDC.deployed();
+    // const wXDC = WXDC.attach("0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b");
+    // await wXDC.connect(accounts[0]).approve("0xeca64907285fe80732bba2f81d8810bafca77790", ethers.constants.MaxUint256);
+    // const tx = await wXDC.connect(accounts[0]).mint("0xf31a2e258bec65a46fb54cd808294ce215070150", ethers.utils.parseUnits("500", 18))
+    // console.log(tx.hash)
+    // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60");
     // const addresses = [
     //     "0xc6E90206BB76dCd2210B86827f7B63b9E24fF6aF",
     // ];
