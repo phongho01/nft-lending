@@ -3,6 +3,7 @@
 pragma solidity 0.8.18;
 
 import "./DirectLoanBaseMinimal.sol";
+import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 /**
  * @title  DirectLoanFixed
@@ -82,7 +83,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
 
     /**
      * @notice This function is called by the borrower when accepting a lender's offer to begin a loan.
-     * 
+     *
      * @param _loanId - offchain id of loan
      * @param _offer - The offer made by the lender.
      * @param _signature - The components of the lender's signature.
@@ -158,7 +159,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
 
         _nonceHasBeenUsedForUser[_signature.signer][_signature.nonce] = true;
 
-        require(NFTfiSigningUtils.isValidLenderSignature(_offer, _signature), "Lender signature is invalid");
+        require(isValidLenderSignature(_offer, _signature), "Lender signature is invalid");
 
         _createLoan(_loanId, _loanTerms, msg.sender, _signature.signer);
 
@@ -179,7 +180,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
         // uint256 value that they have not used yet for an off-chain Loan
         // signature).
         for (uint256 i; i < _signatures.length; i++) {
-            require(NFTfiSigningUtils.isValidLenderSignature(_offer, _signatures[i]), "Signature is invalid");
+            require(isValidLenderSignature(_offer, _signatures[i]), "Signature is invalid");
         }
 
         _createLoan(_loanId, _loanTerms, msg.sender, lendingPool);
@@ -232,5 +233,52 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
             _offer.maximumRepaymentAmount >= _offer.principalAmount,
             "Negative interest rate loans are not allowed."
         );
+    }
+
+    function getChainID() public view returns (uint256) {
+        uint256 id;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            id := chainid()
+        }
+        return id;
+    }
+
+    function isValidLenderSignature(
+        LoanData.Offer memory _offer,
+        LoanData.Signature memory _signature
+    ) public view returns (bool) {
+        require(block.timestamp <= _signature.expiry, "Lender Signature has expired");
+        if (_signature.signer == address(0)) {
+            return false;
+        } else {
+            bytes32 message = keccak256(
+                abi.encodePacked(getEncodedOffer(_offer), getEncodedSignature(_signature))
+            );
+
+            return
+                SignatureChecker.isValidSignatureNow(
+                    _signature.signer,
+                    ECDSA.toEthSignedMessageHash(message),
+                    _signature.signature
+                );
+        }
+    }
+
+    function getEncodedOffer(LoanData.Offer memory _offer) internal pure returns (bytes memory) {
+        return
+            abi.encodePacked(
+                _offer.erc20Denomination,
+                _offer.principalAmount,
+                _offer.maximumRepaymentAmount,
+                _offer.nftCollateralContract,
+                _offer.nftCollateralId,
+                _offer.duration,
+                _offer.adminFeeInBasisPoints
+            );
+    }
+
+    function getEncodedSignature(LoanData.Signature memory _signature) internal pure returns (bytes memory) {
+        return abi.encodePacked(_signature.signer, _signature.nonce, _signature.expiry);
     }
 }

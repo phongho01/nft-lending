@@ -21,8 +21,7 @@ export const Environment = {
   OPERATOR_ACCOUNT_PRIVATE_KEY: process.env.OPERATOR_ACCOUNT_PRIVATE_KEY,
 
   // Web3 host
-  NETWORK_RPC_URL:
-    process.env.NETWORK_RPC_URL || 'https://erpc.xinfin.network',
+  NETWORK_RPC_URL: process.env.NETWORK_RPC_URL || 'https://erpc.xinfin.network',
   WXDC_ADDRESS:
     process.env.WXDC_ADDRESS || '0xfea8b79984920f9d3b02207f17501015d1bdee60',
   COLLECTION_ADDRESS:
@@ -30,9 +29,9 @@ export const Environment = {
     '0xf485b0f0140e416556b32a8390771baddb1561cd',
   LENDING_POOL_ADDRESS:
     process.env.LENDING_POOL_ADDRESS ||
-    '0x559c84532de50c51a1dacdfdbde65a161570125c',
+    '0x6db42573fa618f805982cac3f90179ae8acace28',
   LOAN_ADDRESS:
-    process.env.LOAN_ADDRESS || '0xe585f9dee480f59b4dac27d591e279ab107270b5',
+    process.env.LOAN_ADDRESS || '0x44f389e68b54eb11ab1f026fdd9be7b5a9fa0cfd',
   NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '50',
   IPFS_HOST: process.env.IPFS_HOST || 'https://gateway.ipfs.io/ipfs',
   PINATA_API_KEY: process.env.PINATA_API_KEY || '9bf70188a61a1447bd82',

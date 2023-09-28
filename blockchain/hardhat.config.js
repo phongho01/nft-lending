@@ -47,7 +47,7 @@ const config = {
             accounts: [process.env.SYSTEM_PRIVATE_KEY],
         },
         xdc_mainnet: {
-            url: "https://erpc.xinfin.network",
+            url: "https://erpc.xdcrpc.com",
             accounts: [process.env.SYSTEM_PRIVATE_KEY],
         },
         bscTestnet: {

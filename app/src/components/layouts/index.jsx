@@ -46,7 +46,7 @@ export default function UserLayout() {
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0x32',
+                chainId: '50',
                 rpcUrl: 'https://erpc.xinfin.network',
               },
             ],

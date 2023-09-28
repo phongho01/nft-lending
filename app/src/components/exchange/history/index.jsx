@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
+import ReactLoading from 'react-loading';
 import { ERC20_ABI } from '@src/abi';
 import { getTransactionByEvents, sliceHeadTail, provider } from '@src/utils';
 import { WXDC_ADDRESS } from '@src/constants';
@@ -12,17 +13,36 @@ const XDC_SCAN = import.meta.env.VITE_XDC_SCAN;
 
 export default function Table() {
   const [historyTransactions, setHistoryTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetchTransactionHistory = async () => {
     try {
-      const txs = await getTransactionByEvents(WXDC_ADDRESS, ERC20_ABI, 'Transfer');
+      setIsLoading(true);
+      const [mintTxs, burntTxs] = await Promise.all([
+        getTransactionByEvents(WXDC_ADDRESS, ERC20_ABI, 'Minted'),
+        getTransactionByEvents(WXDC_ADDRESS, ERC20_ABI, 'Burnt'),
+      ]);
+
+      const txs = mintTxs.concat(burntTxs);
       const eventList = [];
       for (let i = 0; i < txs.length; i++) {
         const timestamp = (await provider.getBlock(txs[i].blockNumber)).timestamp;
         const time = new Date(timestamp * 1000).toString().split('GMT')[0];
-        eventList.push({ hash: txs[i].transactionHash, time, ...txs[i].args });
+        const obj = {
+          hash: txs[i].transactionHash,
+          time,
+          address: txs[i].args.account,
+          amount: txs[i].args.amount,
+          name: txs[i].event,
+          blockNumber: txs[i].blockNumber,
+        };
+        eventList.push(obj);
       }
+      eventList.sort((a, b) => b.blockNumber - a.blockNumber);
       setHistoryTransactions(eventList);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log('error', error);
     }
   };
@@ -48,34 +68,41 @@ export default function Table() {
           <div className={styles['table-list-item']}>Receive</div>
           <div className={styles['table-list-item']}>Time</div>
         </div>
-        <div className={styles['table-list-item-body']}>
-          {historyTransactions && historyTransactions.length > 0 ? (
-            historyTransactions.map((item, index) => (
-              <div className={styles['table-list']} key={index}>
-                <Link to={`${XDC_SCAN}/txs/${item.hash}`} target="_blank" className={styles['table-list-item']}>
-                  {sliceHeadTail(item.hash, 8)}
-                </Link>
-                <div className={styles['table-list-item']}>
-                  {sliceHeadTail(item.from === ethers.constants.AddressZero ? item.to : item.from, 8)}
+        {isLoading ? (
+          <div
+            className="react-loading-item"
+            style={{ marginTop: '20px', marginBottom: '20px', paddingBottom: '40px' }}
+          >
+            <ReactLoading type="bars" color="#fff" height={100} width={120} />
+          </div>
+        ) : (
+          <div className={styles['table-list-item-body']}>
+            {historyTransactions && historyTransactions.length > 0 ? (
+              historyTransactions.map((item, index) => (
+                <div className={styles['table-list']} key={index}>
+                  <Link to={`${XDC_SCAN}/tx/${item.hash}`} target="_blank" className={styles['table-list-item']}>
+                    {sliceHeadTail(item.hash, 8)}
+                  </Link>
+                  <div className={styles['table-list-item']}>{sliceHeadTail(item.address, 8)}</div>
+                  <div className={styles['table-list-item']}>
+                    {formatHexValue(item.amount._hex)} {item.name === 'Minted' ? 'XCR' : 'wXCR'}
+                  </div>
+                  <div className={`${styles['table-list-item']} text-center`}>
+                    <Icon icon="ep:right" fontSize={16} />
+                  </div>
+                  <div className={styles['table-list-item']}>
+                    {formatHexValue(item.amount._hex)} {item.name === 'Minted' ? 'wXCR' : 'XCR'}
+                  </div>
+                  <div className={styles['table-list-item']}>{item.time}</div>
                 </div>
-                <div className={styles['table-list-item']}>
-                  {formatHexValue(item.value._hex)} {item.from === ethers.constants.AddressZero ? 'XDC' : 'wXDC'}
-                </div>
-                <div className={`${styles['table-list-item']} text-center`}>
-                  <Icon icon="ep:right" fontSize={16} />
-                </div>
-                <div className={styles['table-list-item']}>
-                  {formatHexValue(item.value._hex)} {item.from === ethers.constants.AddressZero ? 'wXDC' : 'XDC'}
-                </div>
-                <div className={styles['table-list-item']}>{item.time}</div>
+              ))
+            ) : (
+              <div className={styles['no-data']}>
+                <span>No data</span>
               </div>
-            ))
-          ) : (
-            <div className={styles['no-data']}>
-              <span>No data</span>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

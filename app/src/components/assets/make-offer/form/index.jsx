@@ -96,6 +96,7 @@ export default function Form({ order, fetchOffers }) {
       fetchOffers();
       setIsLoading(false);
     } catch (error) {
+      console.log('error', error)
       const txError = parseMetamaskError(error);
       setIsLoading(false);
       toast.error(txError.context);

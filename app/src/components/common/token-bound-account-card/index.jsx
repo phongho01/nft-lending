@@ -22,10 +22,8 @@ export default function TokenBoundAccountCard({ item, onClose }) {
   const handleFetchAssets = async () => {
     try {
       const tbaAddress = await getTokenBoundAccount(item.edition);
-      console.log('tbaAddress', tbaAddress)
       const listNFTs = [1, 2, 3, 4];
       const erc721 = ERC721Contract(WEAPON_NFT_ADDRESS);
-      console.log('ownerOf', await Promise.all(listNFTs.map((tokenId) => erc721.ownerOf(tokenId))))
       const tokenURIs = await Promise.all(listNFTs.map((tokenId) => erc721.tokenURI(tokenId)));
       const nftData = (await Promise.all(tokenURIs.map((uri) => axios.get(uri)))).map((res) => res.data);
 
@@ -54,7 +52,6 @@ export default function TokenBoundAccountCard({ item, onClose }) {
       ];
 
       setAssets({ tokens: tokensData, nfts: nftData });
-      console.log({ tokens: tokensData, nfts: nftData });
 
       setIsLoading(false);
     } catch (error) {

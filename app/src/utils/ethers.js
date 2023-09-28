@@ -59,10 +59,7 @@ export const generateOfferSignature = async (
 
   const encodedSignature = ethers.utils.solidityPack(['address', 'uint256', 'uint256'], [signerAddress, nonce, expiry]);
 
-  const payload = ethers.utils.solidityPack(
-    ['bytes', 'bytes', 'address', 'uint256'],
-    [encodedOffer, encodedSignature, loanContract, chainId]
-  );
+  const payload = ethers.utils.solidityPack(['bytes', 'bytes'], [encodedOffer, encodedSignature]);
 
   const message = ethers.utils.arrayify(ethers.utils.keccak256(payload));
 
@@ -82,8 +79,7 @@ export const getTransactionByEvents = async (address, abi, eventName) => {
     const contract = new ethers.Contract(address, abi, provider);
     const toBlock = await getBlockNumber();
     const events = await contract.queryFilter(eventName, toBlock - 10000, toBlock);
-    return events
-
+    return events;
   } catch (error) {
     return [];
   }
