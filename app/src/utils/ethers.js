@@ -61,11 +61,7 @@ export const generateOfferSignature = async (
 
   const payload = ethers.utils.solidityPack(['bytes', 'bytes'], [encodedOffer, encodedSignature]);
 
-  console.log('message 1', ethers.utils.keccak256(payload));
-
   const message = ethers.utils.arrayify(ethers.utils.keccak256(payload));
-
-  console.log('message 1', message);
 
   const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
   const account = (await provider.listAccounts())[0];

@@ -31,8 +31,6 @@ export default function Table({ title, data, creator }) {
 
       const signature = item.signature;
 
-      console.log(item.hash, offer, signature)
-
       const tx = await acceptOffer(item.hash, offer, signature);
       await tx.wait();
 
