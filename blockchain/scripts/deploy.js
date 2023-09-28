@@ -17,11 +17,12 @@ async function main() {
 
     //* Loading contract factory */
     const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
-    const LoanChecksAndCalculations = await hre.ethers.getContractFactory('LoanChecksAndCalculations');
-    const NFTfiSigningUtils = await hre.ethers.getContractFactory('NFTfiSigningUtils');
+    const LoanChecksAndCalculations = await hre.ethers.getContractFactory("LoanChecksAndCalculations");
+    const NFTfiSigningUtils = await hre.ethers.getContractFactory("NFTfiSigningUtils");
     const LendingPool = await ethers.getContractFactory("LendingPoolV3");
     const WXDC = await ethers.getContractFactory("WXDC");
     const LiquidateNFTPool = await ethers.getContractFactory("LiquidateNFTPool");
+    const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
 
     //* Deploy contracts */
     console.log("==========================================================================");
@@ -30,51 +31,57 @@ async function main() {
 
     const treasury = "0x4F9EF07A6DDF73494D2fF51A8f7B78e9c5815eb2";
 
-    let loanChecksAndCalculations = await LoanChecksAndCalculations.deploy();
-    await loanChecksAndCalculations.deployed()
-    console.log("Library LoanChecksAndCalculations deployed to:", loanChecksAndCalculations.address);
+    // let loanChecksAndCalculations = await LoanChecksAndCalculations.deploy();
+    // await loanChecksAndCalculations.deployed();
+    // console.log("Library LoanChecksAndCalculations deployed to:", loanChecksAndCalculations.address);
 
-    let nftfiSigningUtils = await NFTfiSigningUtils.deploy();
-    await nftfiSigningUtils.deployed()
-    console.log("Library NFTfiSigningUtils deployed to:", nftfiSigningUtils.address);
+    // let nftfiSigningUtils = await NFTfiSigningUtils.deploy();
+    // console.log("Library NFTfiSigningUtils deployed to:", nftfiSigningUtils.address);
+    // await nftfiSigningUtils.deployed();
 
-    const permittedNFTs = await PermittedNFTs.deploy(accounts[0].address);
-    await permittedNFTs.deployed();
-    console.log("PermittedNFTs                        deployed to:>>", permittedNFTs.address);
+    // const permittedNFTs = await PermittedNFTs.deploy(accounts[0].address);
+    // console.log("PermittedNFTs                        deployed to:>>", permittedNFTs.address);
+    // await permittedNFTs.deployed();
 
-    const liquidateNFTPool = await LiquidateNFTPool.deploy(accounts[0].address);
-    await liquidateNFTPool.deployed();
-    console.log("LiquidateNFTPool                        deployed to:>>", liquidateNFTPool.address);
+    // const liquidateNFTPool = await LiquidateNFTPool.deploy(accounts[0].address);
+    // console.log("LiquidateNFTPool                        deployed to:>>", liquidateNFTPool.address);
+    // await liquidateNFTPool.deployed();
 
-    const wXDC = await WXDC.deploy();
-    await wXDC.deployed();
-    console.log("wXDC                        deployed to:>>", wXDC.address);
+    // const wXDC = await WXDC.deploy();
+    // console.log("wXDC                        deployed to:>>", wXDC.address);
+    // await wXDC.deployed();
 
-    // const loanChecksAndCalculations = await LoanChecksAndCalculations.attach("0x25871c12c98b015f626b558763888c5c433af084");
-    // const nftfiSigningUtils = await NFTfiSigningUtils.attach("0x3fdc671d4c10d4806b8e8670d96960fa4fe73f78");
-    // const permittedNFTs = await PermittedNFTs.attach("0xe55df49fc37cc4795810607f51aee537a549014d");
-    // const wXDC = await WXDC.attach("0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b");
-    // const liquidateNFTPool = await LiquidateNFTPool.attach("0xf31a2e258bec65a46fb54cd808294ce215070150");
+    // const chonkSociety = await ChonkSociety.deploy("https://chonksociety.s3.us-east-2.amazonaws.com/metadata/");
+    // console.log("chonkSociety                    deployed to:>>", chonkSociety.address);
+    // await chonkSociety.deployed();
+
+    const loanChecksAndCalculations = LoanChecksAndCalculations.attach("0xba7c9198b40c014504F55549Ef1A52f830a0e883");
+    const nftfiSigningUtils = NFTfiSigningUtils.attach("0xD3099DeA9039148109cE65669960202f948b65fD");
+    const permittedNFTs = PermittedNFTs.attach("0xD3099DeA9039148109cE65669960202f948b65fD");
+    const liquidateNFTPool = LiquidateNFTPool.attach("0x6dB1C99c931C372F73cA17F47B0ed7b856eE9ccE");
+    const wXDC = WXDC.attach("0xfEa8B79984920F9D3B02207F17501015D1bdEe60");
+    const chonkSociety = ChonkSociety.attach("0xF485b0f0140E416556B32a8390771Baddb1561cD");
 
     const lendingPool = await LendingPool.deploy(wXDC.address, treasury, "10000000000000000000", 0);
-    await lendingPool.deployed();
     console.log("LendingPool                     deployed to:>>", lendingPool.address);
-
-    // const lendingPool = await LendingPool.attach("0xeca64907285fe80732bba2f81d8810bafca77790");
+    await lendingPool.deployed();
 
     const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
         libraries: {
             LoanChecksAndCalculations: loanChecksAndCalculations.address,
-            NFTfiSigningUtils: nftfiSigningUtils.address
+            NFTfiSigningUtils: nftfiSigningUtils.address,
         },
     });
 
     const directLoanFixedOffer = await DirectLoanFixedOffer.deploy(accounts[0].address, lendingPool.address, liquidateNFTPool.address, permittedNFTs.address, [wXDC.address]);
-    await directLoanFixedOffer.deployed();
     console.log("DirectLoanFixedOffer                        deployed to:>>", directLoanFixedOffer.address);
+    await directLoanFixedOffer.deployed();
 
-    const tx = await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
-    console.log(tx)
+    let tx = await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
+    console.log("approve", tx.hash);
+
+    tx = await permittedNFTs.setNFTPermit(chonkSociety.address, true);
+    console.log("permittedNFTs", tx.hash);
     console.log("==========================================================================");
     console.log("DONE");
     console.log("==========================================================================");

@@ -43,7 +43,15 @@ const config = {
             accounts: [process.env.SYSTEM_PRIVATE_KEY],
         },
         xdc_testnet: {
-            url: "https://rpc.apothem.network",
+            url: "https://erpc.apothem.network",
+            accounts: [process.env.SYSTEM_PRIVATE_KEY],
+        },
+        xdc_mainnet: {
+            url: "https://erpc.xinfin.network",
+            accounts: [process.env.SYSTEM_PRIVATE_KEY],
+        },
+        bscTestnet: {
+            url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
             accounts: [process.env.SYSTEM_PRIVATE_KEY],
         },
     },

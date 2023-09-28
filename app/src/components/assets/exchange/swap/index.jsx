@@ -4,7 +4,7 @@ import { InlineIcon } from '@iconify/react';
 import { useSelector } from 'react-redux';
 import ReactLoading from 'react-loading';
 import { formatNumber, getNativeBalance } from '@src/utils';
-import { WXDC_ADDRESS } from '@src/constants'
+import { WXDC_ADDRESS } from '@src/constants';
 import { ethers } from 'ethers';
 import styles from '../styles.module.scss';
 
@@ -15,14 +15,14 @@ export default function Swap() {
 
   const [fromToken, setFromToken] = useState({
     img: 'https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/512/Ethereum-ETH-icon.png',
-    symbol: 'XCR',
+    symbol: 'XDC',
     address: WXDC_ADDRESS,
     balance: 0,
   });
 
   const [toToken, setToToken] = useState({
     img: 'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
-    symbol: 'wXCR',
+    symbol: 'wXDC',
     address: ethers.constants.AddressZero,
     balance: account.balance,
   });
@@ -59,15 +59,15 @@ export default function Swap() {
 
   useEffect(() => {
     setIsLoading(true);
-    getNativeBalance(account.address).then((xcr) => {
-      setFromToken({ ...fromToken, balance: xcr });
-      setIsLoading(false);
-    })
-    .catch(err => {
-      console.log('init', err);
-      setIsLoading(false);
-    });
-
+    getNativeBalance(account.address)
+      .then((xcr) => {
+        setFromToken({ ...fromToken, balance: xcr });
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log('init', err);
+        setIsLoading(false);
+      });
   }, []);
 
   return (

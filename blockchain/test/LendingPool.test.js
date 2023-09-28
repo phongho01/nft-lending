@@ -14,9 +14,9 @@ describe("LendingPoolV3", () => {
 
         //** Get Contracts */
         const LendingPoolV3 = await ethers.getContractFactory("LendingPoolV3");
-        const WXCR = await ethers.getContractFactory("WXCR");
+        const WXDC = await ethers.getContractFactory("WXDC");
 
-        wXDC = await WXCR.deploy();
+        wXDC = await WXDC.deploy();
         await wXDC.mint(user1.address, ONE_ETHER.mul(1000));
         await wXDC.mint(user2.address, ONE_ETHER.mul(1000));
         await wXDC.mint(user3.address, ONE_ETHER.mul(1000));

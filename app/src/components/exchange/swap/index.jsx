@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import ReactLoading from 'react-loading';
 import toast, { Toaster } from 'react-hot-toast';
 import { formatNumber, getNativeBalance, parseMetamaskError, mintERC20, burnERC20 } from '@src/utils';
-import { WXDC_ADDRESS } from '@src/constants'
+import { WXDC_ADDRESS } from '@src/constants';
 import { ethers } from 'ethers';
 import styles from '../styles.module.scss';
 
@@ -52,8 +52,9 @@ export default function Swap() {
 
   const handleSubmit = async () => {
     try {
+      if (inputData.pay == 0) return;
       setIsLoading(true);
-      if(fromToken.symbol === 'XDC') {
+      if (fromToken.symbol === 'XDC') {
         const tx = await mintERC20(inputData.pay);
         await tx.wait();
       } else {
@@ -61,6 +62,16 @@ export default function Swap() {
         await tx.wait();
       }
 
+      setFromToken({
+        ...fromToken,
+        balance: fromToken.balance - inputData.pay,
+      });
+
+      setToToken({
+        ...toToken,
+        balance: Number(toToken.balance) + Number(inputData.pay),
+      });
+      toast.success('Swap successfully');
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -72,16 +83,23 @@ export default function Swap() {
 
   useEffect(() => {
     setIsLoading(true);
-    getNativeBalance(account.address).then((xcr) => {
-      setFromToken({ ...fromToken, balance: xcr });
-      setIsLoading(false);
-    })
-    .catch(err => {
-      console.log('init', err);
-      setIsLoading(false);
-    });
-
-  }, []);
+    getNativeBalance(account.address)
+      .then((xdc) => {
+        const balance = Math.round(Number(xdc) * 100) / 100;
+        if (fromToken.symbol === 'XDC') {
+          setFromToken({ ...fromToken, balance });
+          setToToken({ ...toToken, balance: account.balance });
+        } else {
+          setToToken({ ...toToken, balance });
+          setFromToken({ ...fromToken, balance: account.balance });
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log('init', err);
+        setIsLoading(false);
+      });
+  }, [account]);
 
   return (
     <div className={styles['swap-container']}>

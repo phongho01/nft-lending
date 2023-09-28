@@ -6,6 +6,7 @@ import { setRate } from '@src/redux/features/rateSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { getBalance } from '@src/utils/contracts/erc20';
+import { CHAIN_ID } from '@src/constants';
 import Header from './header';
 import Footer from './footer';
 import ConnectMetamask from './connect-metamask';
@@ -36,7 +37,7 @@ export default function UserLayout() {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x33' }],
+        params: [{ chainId: '0x32' }],
       });
     } catch (error) {
       if (error.code === 4902) {
@@ -45,8 +46,8 @@ export default function UserLayout() {
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: '0x33',
-                rpcUrl: 'https://rpc.apothem.network',
+                chainId: '0x32',
+                rpcUrl: 'https://erpc.xinfin.network',
               },
             ],
           });
@@ -102,7 +103,7 @@ export default function UserLayout() {
       <Toaster position="top-center" reverseOrder={false} />
       <Header handleAccountsChanged={handleAccountsChanged} requireSwitchNetwork={requireSwitchNetwork} />
       <div className="container">
-        {account.address && network == 51 ? (
+        {account.address && network == CHAIN_ID ? (
           <Outlet />
         ) : (
           <ConnectMetamask handleAccountsChanged={handleAccountsChanged} requireSwitchNetwork={requireSwitchNetwork} />

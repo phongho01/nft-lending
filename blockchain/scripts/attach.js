@@ -6,10 +6,10 @@ async function main() {
     const accounts = await ethers.getSigners();
 
     //* Loading contract factory */
-    const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
-    const permittedNFT = PermittedNFTs.attach('0x4E96D67870339a9A3723889eF5B2c39996e8d509');
-    const tx = await permittedNFT.connect(accounts[0]).setNFTPermit('0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0', true)
-    console.log(tx);
+    // const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
+    // const permittedNFT = PermittedNFTs.attach("0x4E96D67870339a9A3723889eF5B2c39996e8d509");
+    // const tx = await permittedNFT.connect(accounts[0]).setNFTPermit("0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0", true);
+    // console.log(tx);
 
     // const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
     //     libraries: {
@@ -26,14 +26,15 @@ async function main() {
     // const tx = await loan.connect(accounts[0]).setERC20Permit("0x747ae7Dcf3Ea10D242bd17bA5dfA034ca6102108", true);
     // console.log(tx);
 
-    // const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
+    const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
+    const chonk = ChonkSociety.attach('0xf485b0f0140e416556b32a8390771baddb1561cd');
     // const chonkSociety = await ChonkSociety.deploy("https://chonksociety.s3.us-east-2.amazonaws.com/metadata/");
     // await chonkSociety.deployed();
     // console.log("address", chonkSociety.address);
     // const chonk = ChonkSociety.attach('0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0');
     // console.log(await chonk.ownerOf(1));
-    // const tx = await chonk.connect(accounts[0]).mint('0xc8429C05315Ae47FFc0789A201E5F53E93D591D4', 10);
-    // console.log(tx.hash)
+    const tx = await chonk.connect(accounts[0]).mint('0x6e471EEd9e30A2614B69801Ff2bb470f58682dAB', 6);
+    console.log(tx.hash)
     // const WXDC = await ethers.getContractFactory("WXDC");
     // const wXDC = await WXDC.attach("0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b");
     // const tx = await wXDC.connect(accounts[0]).approve("0x603c668fd2dd8477b755f43c9ccac6a409684717", ethers.constants.MaxUint256);
@@ -57,7 +58,7 @@ async function main() {
 
     // const LendingPool = await ethers.getContractFactory("LendingPoolV3");
     // const lendingPool = LendingPool.attach("0xeca64907285fe80732bba2f81d8810bafca77790");
-    // const tx = await lendingPool.approve("0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60", ethers.constants.MaxUint256);
+    // const tx = await lendingPool.approve("0xe585f9dee480f59b4dac27d591e279ab107270b5", ethers.constants.MaxUint256);
     // console.log(tx)
     // console.log(await lendingPool.treasury());
 
@@ -69,7 +70,7 @@ async function main() {
     // await wXDC.connect(accounts[0]).approve("0xeca64907285fe80732bba2f81d8810bafca77790", ethers.constants.MaxUint256);
     // const tx = await wXDC.connect(accounts[0]).mint("0xf31a2e258bec65a46fb54cd808294ce215070150", ethers.utils.parseUnits("500", 18))
     // console.log(tx.hash)
-    // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60");
+    // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0xe585f9dee480f59b4dac27d591e279ab107270b5");
     // const addresses = [
     //     "0xc6E90206BB76dCd2210B86827f7B63b9E24fF6aF",
     // ];

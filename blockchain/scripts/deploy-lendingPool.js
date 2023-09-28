@@ -19,7 +19,7 @@ async function main() {
 
     //* Loading contract factory */
     const LendingPool = await ethers.getContractFactory("LendingPoolV3");
-    const WXCR = await ethers.getContractFactory("WXCR");
+    const WXDC = await ethers.getContractFactory("WXDC");
     const Point = await ethers.getContractFactory("Point");
 
     //* Deploy contracts */
@@ -27,11 +27,11 @@ async function main() {
     console.log("DEPLOYING CONTRACTS");
     console.log("==========================================================================");
 
-    // const wXDC = await WXCR.deploy();
+    // const wXDC = await WXDC.deploy();
     // await wXDC.deployed();
-    // console.log("WXCR                        deployed to:>>", wXDC.address);
+    // console.log("WXDC                        deployed to:>>", wXDC.address);
 
-    const wXDC = await WXCR.attach("0x747ae7Dcf3Ea10D242bd17bA5dfA034ca6102108");
+    const wXDC = await WXDC.attach("0x747ae7Dcf3Ea10D242bd17bA5dfA034ca6102108");
 
     const lendingPool = await LendingPool.deploy(wXDC.address, "0x4F9EF07A6DDF73494D2fF51A8f7B78e9c5815eb2", "10000000000000000000", 0);
     await lendingPool.deployed();

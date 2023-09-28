@@ -9,7 +9,7 @@ const CHARACTER_URI = "https://res.cloudinary.com/htphong02/raw/upload/v16897555
 const WEAPON_URI = "https://res.cloudinary.com/htphong02/raw/upload/v1689756298/metadata/weapons";
 
 async function main() {
-    //* Get network */
+    // //* Get network */
     const accounts = await ethers.getSigners();
 
     console.log("==========================================================================");
@@ -31,7 +31,7 @@ async function main() {
     await weapon.deployed();
 
     const GOLD = await ethers.getContractFactory("GOLD");
-    const gold = GOLD.attach('0xbec861fabb5b7dbb30369cbb3f3a41e6da8e5fae');
+    // const gold = GOLD.attach('0xbec861fabb5b7dbb30369cbb3f3a41e6da8e5fae');
     const gold = await GOLD.deploy();
     console.log("gold", gold.address);
     await gold.deployed();
@@ -67,9 +67,8 @@ async function main() {
     const receipt = await tx.wait();
     const args = receipt.events.find((ev) => ev.event === "AccountCreated").args;
     const account = args[0];
-    console.log('token bound account', account)
+    console.log("token bound account", account);
 
-    
     console.log("MINT WEAPON");
     for (let i = 1; i < 5; i++) {
         let tx = await weapon.mint(accounts[0].address, `${WEAPON_URI}/${i}.json`);
@@ -79,7 +78,7 @@ async function main() {
         await tx.wait();
     }
 
-    console.log("MINT GOLD AND SILVER")
+    console.log("MINT GOLD AND SILVER");
     tx = await gold.mint(account, ethers.utils.parseUnits("50", 18));
     await tx.wait();
     await silver.mint(account, ethers.utils.parseUnits("43", 18));

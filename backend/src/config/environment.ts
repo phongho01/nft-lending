@@ -22,18 +22,18 @@ export const Environment = {
 
   // Web3 host
   NETWORK_RPC_URL:
-    process.env.NETWORK_RPC_URL || 'https://rpc.apothem.network/',
+    process.env.NETWORK_RPC_URL || 'https://erpc.xinfin.network',
   WXDC_ADDRESS:
-    process.env.WXDC_ADDRESS || '0xae506ec5eea42eab2dc94d7d04e2b32549e59df4',
+    process.env.WXDC_ADDRESS || '0xfea8b79984920f9d3b02207f17501015d1bdee60',
   COLLECTION_ADDRESS:
     process.env.COLLECTION_ADDRESS ||
-    '0x0cc14b1adced0804014449c18ddff71a426a1bd0',
+    '0xf485b0f0140e416556b32a8390771baddb1561cd',
   LENDING_POOL_ADDRESS:
     process.env.LENDING_POOL_ADDRESS ||
-    '0xea17e98586fd542e0edc35bd50400e4045b72dc5',
+    '0x559c84532de50c51a1dacdfdbde65a161570125c',
   LOAN_ADDRESS:
-    process.env.LOAN_ADDRESS || '0xcabf3a50b5cbe215354dec7c286ed26cd20f8f60',
-  NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '51',
+    process.env.LOAN_ADDRESS || '0xe585f9dee480f59b4dac27d591e279ab107270b5',
+  NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '50',
   IPFS_HOST: process.env.IPFS_HOST || 'https://gateway.ipfs.io/ipfs',
   PINATA_API_KEY: process.env.PINATA_API_KEY || '9bf70188a61a1447bd82',
   PINATA_API_SECRET_KEY:

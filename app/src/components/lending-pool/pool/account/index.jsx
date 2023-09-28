@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { XCR_PRICE } from '@src/constants';
+import { XDC_PRICE } from '@src/constants';
 import styles from './styles.module.scss';
 
 export default function Account({ currency, balance, handleWithdraw, handleClaimReward }) {
@@ -10,7 +10,7 @@ export default function Account({ currency, balance, handleWithdraw, handleClaim
         <div className={styles.balance}>
           {balance.balance} {currency}
         </div>
-        <div className={styles.money}>${(balance.balance * XCR_PRICE).toFixed(2)}</div>
+        <div className={styles.money}>${(balance.balance * XDC_PRICE).toFixed(2)}</div>
       </div>
 
       <div className={styles.block}>

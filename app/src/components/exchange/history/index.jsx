@@ -12,8 +12,6 @@ const XDC_SCAN = import.meta.env.VITE_XDC_SCAN;
 
 export default function Table() {
   const [historyTransactions, setHistoryTransactions] = useState([]);
-  console.log(XDC_SCAN);
-
   const fetchTransactionHistory = async () => {
     try {
       const txs = await getTransactionByEvents(WXDC_ADDRESS, ERC20_ABI, 'Transfer');

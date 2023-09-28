@@ -33,7 +33,7 @@ describe("Loan", () => {
         const NFTfiSigningUtils = await hre.ethers.getContractFactory("NFTfiSigningUtils");
         const LiquidateNFTPool = await ethers.getContractFactory("LiquidateNFTPool");
         const LendingPool = await ethers.getContractFactory("LendingPoolV3");
-        const WXCR = await ethers.getContractFactory("WXCR");
+        const WXDC = await ethers.getContractFactory("WXDC");
 
         liquidateNFTPool = await LiquidateNFTPool.deploy(deployer.address);
         await liquidateNFTPool.deployed();
@@ -54,7 +54,7 @@ describe("Loan", () => {
         permittedNFTs = await PermittedNFTs.deploy(deployer.address);
         await permittedNFTs.deployed();
 
-        wXDC = await WXCR.deploy();
+        wXDC = await WXDC.deploy();
         await wXDC.deployed();
 
         const lendingPool = await LendingPool.deploy(wXDC.address, treasury.address, "10000000000000000000", 0);
@@ -83,10 +83,10 @@ describe("Loan", () => {
             offer.erc20Denomination = ZERO_ADDRESS;
             await expect(directLoanFixedOffer.connect(borrower).acceptOffer(loanId, offer, signature)).to.revertedWith("Currency denomination is not permitted");
 
-            const WXCR = await ethers.getContractFactory("WXCR");
-            const newWXCR = await WXCR.deploy();
-            await newWXCR.deployed();
-            offer.erc20Denomination = newWXCR.address;
+            const WXDC = await ethers.getContractFactory("WXDC");
+            const newWXDC = await WXDC.deploy();
+            await newWXDC.deployed();
+            offer.erc20Denomination = newWXDC.address;
             await expect(directLoanFixedOffer.connect(borrower).acceptOffer(loanId, offer, signature)).to.revertedWith("Currency denomination is not permitted");
         });
 
@@ -172,11 +172,11 @@ describe("Loan", () => {
             offer.duration = 11;
             await expect(directLoanFixedOffer.connect(borrower).acceptOffer(loanId, offer, signature)).to.revertedWith("Lender signature is invalid");
 
-            const WXCR = await ethers.getContractFactory("WXCR");
-            const newWXCR = await WXCR.deploy();
-            await newWXCR.deployed();
-            offer.erc20Denomination = newWXCR.address;
-            await directLoanFixedOffer.connect(deployer).setERC20Permit(newWXCR.address, true);
+            const WXDC = await ethers.getContractFactory("WXDC");
+            const newWXDC = await WXDC.deploy();
+            await newWXDC.deployed();
+            offer.erc20Denomination = newWXDC.address;
+            await directLoanFixedOffer.connect(deployer).setERC20Permit(newWXDC.address, true);
             await expect(directLoanFixedOffer.connect(borrower).acceptOffer(loanId, offer, signature)).to.revertedWith("Lender signature is invalid");
 
             signature.nonce = getRandomInt();
