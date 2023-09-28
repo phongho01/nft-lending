@@ -30,9 +30,9 @@ export const Environment = {
     '0xf485b0f0140e416556b32a8390771baddb1561cd',
   LENDING_POOL_ADDRESS:
     process.env.LENDING_POOL_ADDRESS ||
-    '0x559c84532de50c51a1dacdfdbde65a161570125c',
+    '0x92e18c48a70cb9571f53d75aba90b93efa5ec558',
   LOAN_ADDRESS:
-    process.env.LOAN_ADDRESS || '0xe585f9dee480f59b4dac27d591e279ab107270b5',
+    process.env.LOAN_ADDRESS || '0x70a6bdbb3a42bc636668c4931fa06e82b97f9754',
   NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID || '50',
   IPFS_HOST: process.env.IPFS_HOST || 'https://gateway.ipfs.io/ipfs',
   PINATA_API_KEY: process.env.PINATA_API_KEY || '9bf70188a61a1447bd82',

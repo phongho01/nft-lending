@@ -43,9 +43,9 @@ async function main() {
     // console.log("PermittedNFTs                        deployed to:>>", permittedNFTs.address);
     // await permittedNFTs.deployed();
 
-    // const liquidateNFTPool = await LiquidateNFTPool.deploy(accounts[0].address);
-    // console.log("LiquidateNFTPool                        deployed to:>>", liquidateNFTPool.address);
-    // await liquidateNFTPool.deployed();
+    const liquidateNFTPool = await LiquidateNFTPool.deploy(accounts[0].address);
+    console.log("LiquidateNFTPool                        deployed to:>>", liquidateNFTPool.address);
+    await liquidateNFTPool.deployed();
 
     // const wXDC = await WXDC.deploy();
     // console.log("wXDC                        deployed to:>>", wXDC.address);
@@ -58,9 +58,10 @@ async function main() {
     const loanChecksAndCalculations = LoanChecksAndCalculations.attach("0xba7c9198b40c014504F55549Ef1A52f830a0e883");
     const nftfiSigningUtils = NFTfiSigningUtils.attach("0xD3099DeA9039148109cE65669960202f948b65fD");
     const permittedNFTs = PermittedNFTs.attach("0xD3099DeA9039148109cE65669960202f948b65fD");
-    const liquidateNFTPool = LiquidateNFTPool.attach("0x6dB1C99c931C372F73cA17F47B0ed7b856eE9ccE");
+    // const liquidateNFTPool = LiquidateNFTPool.attach("0xef79bdc94d2932e8af54a9ce0c9a9026381797bb");
     const wXDC = WXDC.attach("0xfEa8B79984920F9D3B02207F17501015D1bdEe60");
     const chonkSociety = ChonkSociety.attach("0xF485b0f0140E416556B32a8390771Baddb1561cD");
+    // const lendingPool = LendingPool.attach("0x92e18c48a70cb9571f53d75aba90b93efa5ec558")
 
     const lendingPool = await LendingPool.deploy(wXDC.address, treasury, "10000000000000000000", 0);
     console.log("LendingPool                     deployed to:>>", lendingPool.address);

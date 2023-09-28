@@ -10,6 +10,7 @@ export const loanContract = (signerOrProvider) => {
 };
 
 export const acceptOffer = (loanId, offer, signature) => {
+  console.log(loanId, offer, signature)
   const contract = loanContract(signer);
   return contract.acceptOffer(loanId, offer, signature);
 };

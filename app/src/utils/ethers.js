@@ -64,7 +64,11 @@ export const generateOfferSignature = async (
     [encodedOffer, encodedSignature, loanContract, chainId]
   );
 
+  console.log('message 1', ethers.utils.keccak256(payload));
+
   const message = ethers.utils.arrayify(ethers.utils.keccak256(payload));
+  
+  console.log('message 1', message);
 
   const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
   const account = (await provider.listAccounts())[0];
@@ -82,8 +86,7 @@ export const getTransactionByEvents = async (address, abi, eventName) => {
     const contract = new ethers.Contract(address, abi, provider);
     const toBlock = await getBlockNumber();
     const events = await contract.queryFilter(eventName, toBlock - 10000, toBlock);
-    return events
-
+    return events;
   } catch (error) {
     return [];
   }

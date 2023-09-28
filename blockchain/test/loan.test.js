@@ -35,7 +35,7 @@ describe("Loan", () => {
         const LendingPool = await ethers.getContractFactory("LendingPoolV3");
         const WXDC = await ethers.getContractFactory("WXDC");
 
-        liquidateNFTPool = await LiquidateNFTPool.deploy(deployer.address);
+        let liquidateNFTPool = await LiquidateNFTPool.deploy(deployer.address);
         await liquidateNFTPool.deployed();
 
         let loanChecksAndCalculations = await LoanChecksAndCalculations.deploy();
@@ -44,6 +44,15 @@ describe("Loan", () => {
         let nftfiSigningUtils = await NFTfiSigningUtils.deploy();
         await nftfiSigningUtils.deployed();
 
+        wXDC = await WXDC.deploy();
+        await wXDC.deployed();
+
+        const lendingPool = await LendingPool.deploy(wXDC.address, treasury.address, "10000000000000000000", 0);
+        await lendingPool.deployed();
+
+        permittedNFTs = await PermittedNFTs.deploy(deployer.address);
+        await permittedNFTs.deployed();
+
         const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
             libraries: {
                 LoanChecksAndCalculations: loanChecksAndCalculations.address,
@@ -51,31 +60,22 @@ describe("Loan", () => {
             },
         });
 
-        permittedNFTs = await PermittedNFTs.deploy(deployer.address);
-        await permittedNFTs.deployed();
-
-        wXDC = await WXDC.deploy();
-        await wXDC.deployed();
-
-        const lendingPool = await LendingPool.deploy(wXDC.address, treasury.address, "10000000000000000000", 0);
-        await lendingPool.deployed();
-
         directLoanFixedOffer = await DirectLoanFixedOffer.deploy(deployer.address, lendingPool.address, liquidateNFTPool.address, permittedNFTs.address, [wXDC.address]);
         await directLoanFixedOffer.deployed();
 
-        const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
-        chonkSociety = await ChonkSociety.deploy("https://chonksociety.s3.us-east-2.amazonaws.com/metadata/");
-        await chonkSociety.deployed();
+        // const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
+        // chonkSociety = await ChonkSociety.deploy("https://chonksociety.s3.us-east-2.amazonaws.com/metadata/");
+        // await chonkSociety.deployed();
 
-        // early transaction
-        await permittedNFTs.connect(deployer).setNFTPermit(chonkSociety.address, true);
-        await chonkSociety.connect(borrower).mint(borrower.address, 10);
-        await wXDC.connect(lender).mint(lender.address, TOKEN_1.mul(100));
-        await wXDC.connect(borrower).mint(borrower.address, TOKEN_1.mul(100));
+        // // early transaction
+        // await permittedNFTs.connect(deployer).setNFTPermit(chonkSociety.address, true);
+        // await chonkSociety.connect(borrower).mint(borrower.address, 10);
+        // await wXDC.connect(lender).mint(lender.address, TOKEN_1.mul(100));
+        // await wXDC.connect(borrower).mint(borrower.address, TOKEN_1.mul(100));
 
-        await wXDC.connect(borrower).mint(lendingPool.address, TOKEN_1.mul(100));
-        await wXDC.mint(liquidateNFTPool.address, TOKEN_1.mul(1000));
-        await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
+        // await wXDC.connect(borrower).mint(lendingPool.address, TOKEN_1.mul(100));
+        // await wXDC.mint(liquidateNFTPool.address, TOKEN_1.mul(1000));
+        // await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
     });
 
     describe("acceptOffer", () => {
@@ -474,4 +474,37 @@ describe("Loan", () => {
         });
     });
 
+    it.only("test", async () => {
+        const loanId = "0xa8874b77690e710ec2a86b3ea9ab84456a9092dbfb2d9ba8cedcd6ce140e2006";
+        const offerData = {
+            principalAmount: ethers.utils.parseUnits("10", 18),
+            maximumRepaymentAmount: ethers.utils.parseUnits("10.2", 18),
+            nftCollateralId: 1,
+            nftCollateralContract: "0xf485b0f0140e416556b32a8390771baddb1561cd",
+            duration: 2592000,
+            adminFeeInBasisPoints: 25,
+            erc20Denomination: "0xfea8b79984920f9d3b02207f17501015d1bdee60",
+        };
+        const signatureData = {
+            signer: "0xc8429c05315ae47ffc0789a201e5f53e93d591d4",
+            nonce: 7495481201976039,
+            expiry: 1696501283,
+            signature: "0x0ee6bb9d7d0b421f76310c6c0282a9f59b433519f4cdcdc70a90a1714b55034a31140b3ab6f88b8b279d3b0d4144740fb8fd4380b1413d4b46c5b1f382850c6d1c",
+        };
+        await directLoanFixedOffer.setERC20Permits(["0xfea8b79984920f9d3b02207f17501015d1bdee60"], [true]);
+        await permittedNFTs.connect(deployer).setNFTPermit("0xf485b0f0140e416556b32a8390771baddb1561cd", true);
+        await expect(directLoanFixedOffer.connect(borrower).acceptOffer(loanId, offerData, signatureData)).to.revertedWith("Currency denomination is not permitted");
+
+        const { offer, repayment, nftTokenId, nftAddress, duration, adminFeeInBasisPoints = 25, erc20Denomination = WXDC_ADDRESS } = offerData;
+        const encodedOffer = ethers.utils.solidityPack(
+            ["address", "uint256", "uint256", "address", "uint256", "uint32", "uint16"],
+            [erc20Denomination, offer, repayment, nftAddress, nftTokenId, duration, adminFeeInBasisPoints]
+        );
+
+        const { signer: signerAddress, nonce, expiry } = signatureData;
+
+        const encodedSignature = ethers.utils.solidityPack(["address", "uint256", "uint256"], [signerAddress, nonce, expiry]);
+        console.log("encodedOffer", encodedOffer);
+        console.log("encodedSignature", encodedSignature);
+    });
 });

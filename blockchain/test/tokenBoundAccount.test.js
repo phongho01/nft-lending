@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const { parseEther, formatEther } = require("ethers/lib/utils");
 const { MaxUint256 } = require("@ethersproject/constants");
 
-describe.only("Token Bound Account", () => {
+describe("Token Bound Account", () => {
     beforeEach(async () => {
         //** Get Wallets */
         [user1, user2, user3, treasury] = await ethers.getSigners();

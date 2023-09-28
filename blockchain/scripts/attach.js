@@ -7,19 +7,70 @@ async function main() {
 
     //* Loading contract factory */
     // const PermittedNFTs = await ethers.getContractFactory("PermittedNFTs");
-    // const permittedNFT = PermittedNFTs.attach("0x4E96D67870339a9A3723889eF5B2c39996e8d509");
+    // const permittedNFT = PermittedNFTs.attach("0xd3099dea9039148109ce65669960202f948b65fd");
+    // console.log(await permittedNFT.getNFTPermit("0xf485b0f0140e416556b32a8390771baddb1561cd"));
     // const tx = await permittedNFT.connect(accounts[0]).setNFTPermit("0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0", true);
     // console.log(tx);
 
-    // const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
-    //     libraries: {
-    //         LoanChecksAndCalculations: "0xF46E912d82e49104d332D69c2A9E1Aa0B7440892",
-    //         NFTfiSigningUtils: "0x4A0c460a775404B87674E2fBff48CA6607b7fBB3",
-    //     },
-    // });
+    const DirectLoanFixedOffer = await ethers.getContractFactory("DirectLoanFixedOffer", {
+        libraries: {
+            LoanChecksAndCalculations: "0xba7c9198b40c014504f55549ef1a52f830a0e883",
+            NFTfiSigningUtils: "0xd3099dea9039148109ce65669960202f948b65fd",
+        },
+    });
 
-    // const loanId = "0x00277cd755dfc5c1ea413df8e2e6f91857aed441a9aa7f5394aca54fedce1332";
-    // const loan = DirectLoanFixedOffer.attach("0xd5adFc323047792d60D36aF9fF3D7867442127D2");
+    const loan = DirectLoanFixedOffer.attach("0xDC53F5e44D1c723a7825F865AFA61eEA079066C1");
+
+    const offerData = {
+        principalAmount: ethers.utils.parseUnits("10", 18),
+        maximumRepaymentAmount: ethers.utils.parseUnits("10.2", 18),
+        nftCollateralId: 1,
+        nftCollateralContract: "0xf485b0f0140e416556b32a8390771baddb1561cd",
+        duration: 2592000,
+        adminFeeInBasisPoints: 25,
+        erc20Denomination: "0xfea8b79984920f9d3b02207f17501015d1bdee60",
+    };
+    const signatureData = {
+        signer: "0xc8429c05315ae47ffc0789a201e5f53e93d591d4",
+        nonce: 7495481201976039,
+        expiry: 1696501283,
+        signature: "0x0ee6bb9d7d0b421f76310c6c0282a9f59b433519f4cdcdc70a90a1714b55034a31140b3ab6f88b8b279d3b0d4144740fb8fd4380b1413d4b46c5b1f382850c6d1c",
+    };
+
+    const offer = [ethers.utils.parseUnits("10", 18), ethers.utils.parseUnits("10.2", 18), 1, "0xf485b0f0140e416556b32a8390771baddb1561cd", 2592000, 25, "0xfea8b79984920f9d3b02207f17501015d1bdee60"];
+    const signature = [
+        "0xc8429c05315ae47ffc0789a201e5f53e93d591d4",
+        7495481201976039,
+        1696501283,
+        "0x0ee6bb9d7d0b421f76310c6c0282a9f59b433519f4cdcdc70a90a1714b55034a31140b3ab6f88b8b279d3b0d4144740fb8fd4380b1413d4b46c5b1f382850c6d1c",
+    ];
+
+    console.log(loan.functions);
+    console.log(await loan.getChainID());
+    const result = await loan.isValidLenderSignature(offerData, signatureData, "0x70a6bdbb3a42bc636668c4931fa06e82b97f9754");
+    console.log(result)
+    // const hash = "0xbecf53043797e8af60f982f34047d7da0cba396a73be30172816d13ecf7a1608";
+    // const offer = {
+    //     principalAmount: "1000000000000000000",
+    //     maximumRepaymentAmount: "1010000000000000000",
+    //     nftCollateralId: 1,
+    //     nftCollateralContract: "0xf485b0f0140e416556b32a8390771baddb1561cd",
+    //     duration: 2592000,
+    //     adminFeeInBasisPoints: 25,
+    //     erc20Denomination: "0xfea8b79984920f9d3b02207f17501015d1bdee60",
+    // };
+
+    // const signature = {
+    //     signer: "0xc8429c05315ae47ffc0789a201e5f53e93d591d4",
+    //     nonce: 125069799796061,
+    //     expiry: 1696495087,
+    //     signature: "0x462933a275ff9ea90328804cdbbd0966b18a63485b5acf991ba892b91dce91df7e4002ded7060cad4dd895e3a273e1b3a0665d4b24280b6a19e094f1c612f3841c",
+    // };
+
+    // const tx = await loan.acceptOffer(hash, offer, signature);
+    // console.log(tx.hash);
+
+    // console.log(await loan.getERC20Permit("0xfea8b79984920f9d3b02207f17501015d1bdee60"))
     // console.log(await loan.loanIdToLoan(loanId));
     // const tx = await loan.payBackLoan(loanId);
     // console.log(tx)
@@ -27,16 +78,18 @@ async function main() {
     // console.log(tx);
 
     const ChonkSociety = await ethers.getContractFactory("ChonkSociety");
-    const chonk = ChonkSociety.attach('0xf485b0f0140e416556b32a8390771baddb1561cd');
+    const chonk = ChonkSociety.attach("0xf485b0f0140e416556b32a8390771baddb1561cd");
+    console.log(await chonk.getApproved(1));
     // const chonkSociety = await ChonkSociety.deploy("https://chonksociety.s3.us-east-2.amazonaws.com/metadata/");
     // await chonkSociety.deployed();
     // console.log("address", chonkSociety.address);
     // const chonk = ChonkSociety.attach('0x0Cc14B1adcEd0804014449C18ddfF71a426a1bD0');
     // console.log(await chonk.ownerOf(1));
-    const tx = await chonk.connect(accounts[0]).mint('0x6e471EEd9e30A2614B69801Ff2bb470f58682dAB', 6);
-    console.log(tx.hash)
+    // const tx = await chonk.connect(accounts[0]).mint('0x6e471EEd9e30A2614B69801Ff2bb470f58682dAB', 6);
+    // console.log(tx.hash)
     // const WXDC = await ethers.getContractFactory("WXDC");
-    // const wXDC = await WXDC.attach("0x8cbace0bdd6e99bec44b8b5dbd0f30297aaf267b");
+    // const wXDC = WXDC.attach("0xfea8b79984920f9d3b02207f17501015d1bdee60");
+    // console.log(await wXDC.allowance("0xc8429C05315Ae47FFc0789A201E5F53E93D591D4", "0x70a6bdbb3a42bc636668c4931fa06e82b97f9754"))
     // const tx = await wXDC.connect(accounts[0]).approve("0x603c668fd2dd8477b755f43c9ccac6a409684717", ethers.constants.MaxUint256);
     // console.log(tx);
     // const tx = await wXDC.mint(
@@ -58,7 +111,7 @@ async function main() {
 
     // const LendingPool = await ethers.getContractFactory("LendingPoolV3");
     // const lendingPool = LendingPool.attach("0xeca64907285fe80732bba2f81d8810bafca77790");
-    // const tx = await lendingPool.approve("0xe585f9dee480f59b4dac27d591e279ab107270b5", ethers.constants.MaxUint256);
+    // const tx = await lendingPool.approve("0x70a6bdbb3a42bc636668c4931fa06e82b97f9754", ethers.constants.MaxUint256);
     // console.log(tx)
     // console.log(await lendingPool.treasury());
 
@@ -70,7 +123,7 @@ async function main() {
     // await wXDC.connect(accounts[0]).approve("0xeca64907285fe80732bba2f81d8810bafca77790", ethers.constants.MaxUint256);
     // const tx = await wXDC.connect(accounts[0]).mint("0xf31a2e258bec65a46fb54cd808294ce215070150", ethers.utils.parseUnits("500", 18))
     // console.log(tx.hash)
-    // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0xe585f9dee480f59b4dac27d591e279ab107270b5");
+    // const tx = await wXDC.allowance("0xeca64907285fe80732bba2f81d8810bafca77790", "0x70a6bdbb3a42bc636668c4931fa06e82b97f9754");
     // const addresses = [
     //     "0xc6E90206BB76dCd2210B86827f7B63b9E24fF6aF",
     // ];
