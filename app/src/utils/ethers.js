@@ -59,15 +59,12 @@ export const generateOfferSignature = async (
 
   const encodedSignature = ethers.utils.solidityPack(['address', 'uint256', 'uint256'], [signerAddress, nonce, expiry]);
 
-  const payload = ethers.utils.solidityPack(
-    ['bytes', 'bytes', 'address', 'uint256'],
-    [encodedOffer, encodedSignature, loanContract, chainId]
-  );
+  const payload = ethers.utils.solidityPack(['bytes', 'bytes'], [encodedOffer, encodedSignature]);
 
   console.log('message 1', ethers.utils.keccak256(payload));
 
   const message = ethers.utils.arrayify(ethers.utils.keccak256(payload));
-  
+
   console.log('message 1', message);
 
   const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');

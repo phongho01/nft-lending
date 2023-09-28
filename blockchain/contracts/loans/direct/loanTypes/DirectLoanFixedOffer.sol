@@ -159,7 +159,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
 
         _nonceHasBeenUsedForUser[_signature.signer][_signature.nonce] = true;
 
-        require(isValidLenderSignature(_offer, _signature, address(this)), "Lender signature is invalid");
+        require(isValidLenderSignature(_offer, _signature), "Lender signature is invalid");
 
         _createLoan(_loanId, _loanTerms, msg.sender, _signature.signer);
 
@@ -180,7 +180,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
         // uint256 value that they have not used yet for an off-chain Loan
         // signature).
         for (uint256 i; i < _signatures.length; i++) {
-            require(isValidLenderSignature(_offer, _signatures[i], address(this)), "Signature is invalid");
+            require(isValidLenderSignature(_offer, _signatures[i]), "Signature is invalid");
         }
 
         _createLoan(_loanId, _loanTerms, msg.sender, lendingPool);
@@ -246,16 +246,14 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
 
     function isValidLenderSignature(
         LoanData.Offer memory _offer,
-        LoanData.Signature memory _signature,
-        address _loanContract
+        LoanData.Signature memory _signature
     ) public view returns (bool) {
         require(block.timestamp <= _signature.expiry, "Lender Signature has expired");
-        require(_loanContract != address(0), "Loan is zero address");
         if (_signature.signer == address(0)) {
             return false;
         } else {
             bytes32 message = keccak256(
-                abi.encodePacked(getEncodedOffer(_offer), getEncodedSignature(_signature), _loanContract, "50")
+                abi.encodePacked(getEncodedOffer(_offer), getEncodedSignature(_signature))
             );
 
             return

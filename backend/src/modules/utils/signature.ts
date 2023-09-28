@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { calculateRepayment } from './apr';
 
-const ONE_DAY = 24 * 60 * 60;
+const ONE_DAY = 60;
 
 const getSignerAddress = (msg: string, signature: string) => {
   try {
@@ -37,7 +37,6 @@ export const generateOfferMessage = (
     erc20Denomination,
   } = offerData;
   const repayment = calculateRepayment(offer, rate, duration);
-  console.log(loanContract, chainId)
 
   const encodedOffer = ethers.solidityPacked(
     ['address', 'uint256', 'uint256', 'address', 'uint256', 'uint32', 'uint16'],
@@ -60,8 +59,8 @@ export const generateOfferMessage = (
   );
 
   const payload = ethers.solidityPacked(
-    ['bytes', 'bytes', 'address', 'uint256'],
-    [encodedOffer, encodedSignature, loanContract, chainId],
+    ['bytes', 'bytes'],
+    [encodedOffer, encodedSignature],
   );
   return ethers.keccak256(payload);
 };

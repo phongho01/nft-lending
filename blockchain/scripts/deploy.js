@@ -81,8 +81,8 @@ async function main() {
     let tx = await lendingPool.approve(directLoanFixedOffer.address, ethers.constants.MaxUint256);
     console.log("approve", tx.hash);
 
-    tx = await permittedNFTs.setNFTPermit(chonkSociety.address, true);
-    console.log("permittedNFTs", tx.hash);
+    // tx = await permittedNFTs.setNFTPermit(chonkSociety.address, true);
+    // console.log("permittedNFTs", tx.hash);
     console.log("==========================================================================");
     console.log("DONE");
     console.log("==========================================================================");

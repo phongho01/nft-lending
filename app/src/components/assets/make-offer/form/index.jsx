@@ -76,10 +76,10 @@ export default function Form({ order, fetchOffers }) {
       offer.adminFeeInBasisPoints = offerData.adminFeeInBasisPoints;
       offer.erc20Denomination = offerData.erc20Denomination;
       // check allowance and approve erc20
-      // if (!(await checkAllowance(account.address, ethers.utils.parseUnits(data.amount, 18)))) {
-      //   const tx = await approveERC20(ethers.utils.parseUnits(data.amount, 18));
-      //   await tx.wait();
-      // }
+      if (!(await checkAllowance(account.address, ethers.utils.parseUnits(data.amount, 18)))) {
+        const tx = await approveERC20(ethers.utils.parseUnits(data.amount, 18));
+        await tx.wait();
+      }
       await toast.promise(createOffer(offer), {
         loading: 'Making offer...',
         success: <b style={{ color: '#000' }}>Make offer successfully!</b>,
@@ -96,6 +96,7 @@ export default function Form({ order, fetchOffers }) {
       fetchOffers();
       setIsLoading(false);
     } catch (error) {
+      console.log('error', error)
       const txError = parseMetamaskError(error);
       setIsLoading(false);
       toast.error(txError.context);
