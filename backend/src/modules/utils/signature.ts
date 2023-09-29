@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { calculateRepayment } from './apr';
 
-const ONE_DAY = 60;
+const ONE_DAY = 60 * 60 * 24;
 
 const getSignerAddress = (msg: string, signature: string) => {
   try {

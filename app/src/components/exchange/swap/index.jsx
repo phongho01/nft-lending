@@ -34,6 +34,10 @@ export default function Swap() {
     receive: 1,
   });
 
+  const roundedNumber = (num) => {
+    return Math.round(Number(num) * 100) / 100;
+  };
+
   const handleChange = (e) => {
     const newInputData = { ...inputData, [e.target.name]: e.target.value };
     if (e.target.name === 'pay' || e.target.name === 'rate') {
@@ -64,12 +68,12 @@ export default function Swap() {
 
       setFromToken({
         ...fromToken,
-        balance: fromToken.balance - inputData.pay,
+        balance: roundedNumber(fromToken.balance - inputData.pay),
       });
 
       setToToken({
         ...toToken,
-        balance: Number(toToken.balance) + Number(inputData.pay),
+        balance: roundedNumber(Number(toToken.balance) + Number(inputData.pay)),
       });
       toast.success('Swap successfully');
       setIsLoading(false);
@@ -85,7 +89,7 @@ export default function Swap() {
     setIsLoading(true);
     getNativeBalance(account.address)
       .then((xdc) => {
-        const balance = Math.round(Number(xdc) * 100) / 100;
+        const balance = roundedNumber(xdc);
         if (fromToken.symbol === 'XDC') {
           setFromToken({ ...fromToken, balance });
           setToToken({ ...toToken, balance: account.balance });

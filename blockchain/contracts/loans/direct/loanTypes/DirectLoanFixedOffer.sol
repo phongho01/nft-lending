@@ -252,9 +252,7 @@ contract DirectLoanFixedOffer is DirectLoanBaseMinimal {
         if (_signature.signer == address(0)) {
             return false;
         } else {
-            bytes32 message = keccak256(
-                abi.encodePacked(getEncodedOffer(_offer), getEncodedSignature(_signature))
-            );
+            bytes32 message = keccak256(abi.encodePacked(getEncodedOffer(_offer), getEncodedSignature(_signature)));
 
             return
                 SignatureChecker.isValidSignatureNow(
